@@ -1,0 +1,19 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+   <remap from="/cmd_vel" to="/pacifista/cmd_vel" />
+    <!-- <remap from="/odom" to="/pacifista/odom" /> -->
+    <!-- local planner -->   
+    <param name="base_global_planner" value="navfn/NavfnROS"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />     
+    <rosparam file="$(find pacifista_description)/config/dwa_local_planner_params.yaml" command="load"/>
+    <!-- params for costmap layers --> 
+    <rosparam file="$(find pacifista_description)/config/local_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find pacifista_description)/config/global_costmap_params.yaml" command="load"/>
+    <rosparam file="$(find pacifista_description)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find pacifista_description)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find pacifista_description)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find pacifista_description)/config/move_base_params.yaml" command="load" />
+  </node>
+</launch>
+
+

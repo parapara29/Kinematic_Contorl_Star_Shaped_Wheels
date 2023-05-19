@@ -1,0 +1,33 @@
+pacifista/gazebo_ros_control/pid_gains:
+
+    joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 100
+
+    Rev1:
+        type: velocity_controllers/JointVelocityController
+        joint: Rev1
+        p: 0.04
+        i: 0.01 
+        d: 0.0
+
+    Rev2:
+        type: velocity_controllers/JointVelocityController
+        joint: Rev2
+        p: 0.04
+        i: 0.01
+        d: 0.0
+
+    Rev3:
+        type: velocity_controllers/JointVelocityController
+        joint: Rev3
+        p: 0.04 
+        i: 0.01 
+        d: 0.0
+   
+    Rev4:
+        type: velocity_controllers/JointVelocityController
+        joint: Rev4
+        p: 0.04 
+        i: 0.01 
+        d: 0.0

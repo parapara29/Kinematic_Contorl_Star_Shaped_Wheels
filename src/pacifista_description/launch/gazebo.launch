@@ -1,0 +1,31 @@
+<launch>
+  <arg name="x_pos" default="0"/>
+  <arg name="y_pos" default="0"/>
+  <arg name="z_pos" default="0.0"/>
+<arg name="map_file" default="$(find pacifista_description)/maps/map.yaml"/>
+  <param name="robot_description" command="$(find xacro)/xacro $(find pacifista_description)/urdf/pacifista.xacro"/>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description -urdf -model pacifista"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find pacifista_description)/worlds/quicksilver_world.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+   <include file="$(find pacifista_description)/launch/controller.launch" />
+<node name="omni_drive_controller" pkg="pacifista_control" type="omni_drive_controller.py" output="screen" />
+<node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+<node pkg="teleop_twist_keyboard" name="teleop" type="teleop_twist_keyboard.py" output="screen">
+    <remap from="cmd_vel" to="/pacifista/cmd_vel"/>
+</node>
+<node pkg="tf" type="static_transform_publisher"  name="odom_to_base"
+      args="0 0 0 0 0 0 /odom /base_footprint 100" />
+<node pkg="tf" type="static_transform_publisher"  name="map_to_odom"
+      args="0 0 0 0 0 0 /map /odom 100" />
+      
+    <node pkg="tf" type="static_transform_publisher"  name="foot_to_base"
+      args="0 0 0 0 0 0 /base_footprint /base_link 100" />
+ <!-- <include file="$(find pacifista_description)/launch/move_base.launch" />  -->
+   <include file="$(find pacifista_description)/launch/display.launch" /> 
+</launch>
